@@ -1,17 +1,25 @@
-export type Movie = {
-  original_title: string;
-  overview: string;
-  title: string;
+export type BaseReponse<T> = {
+  page: number;
+  total_pages: number;
+  total_results: number;
+  results: T[];
 };
 
-export type MovieResponse = {
-  data: {
-    movies: {
-      page: number;
-      results: Movie[];
-      total_pages: number;
-      total_results: number;
-    };
-    notification: boolean;
-  };
+export type TMDBMovie = {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: false;
+  vote_average: number;
+  vote_count: number;
 };
+
+export type TMDBMovieResponse = BaseReponse<TMDBMovie>;
