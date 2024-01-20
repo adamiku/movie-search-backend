@@ -1,3 +1,4 @@
+import { inspect } from 'util';
 import winston from 'winston';
 
 const { combine, timestamp, json, printf } = winston.format;
@@ -15,7 +16,7 @@ export const logger = winston.createLogger({
         data // metadata
       };
 
-      return JSON.stringify(response);
+      return inspect(response);
     })
   ),
   // store logs in the console (can be moved to a file or a db as well)
