@@ -9,11 +9,11 @@ const router = Router();
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   const { query, page } = req.query;
   const normalizedPage = Number(page) || 1;
-  const normalizedQuery = String(page);
+  const normalizedQuery = String(query);
 
   try {
     const data = await getOrSetCache<TMDBMovieResponse & { cached: boolean }>(
-      { query, page: normalizedPage },
+      { query: normalizedQuery, page: normalizedPage },
       () => fetchMovies(normalizedQuery, normalizedPage)
     );
     logger.info('Success', { req, res });

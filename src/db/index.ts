@@ -2,18 +2,23 @@ import { differenceInSeconds } from 'date-fns';
 
 export const cache = new Map();
 
-export async function getOrSetCache<T>(key: object, cb: Function): Promise<T> {
-  const moviesData = cache.get(JSON.stringify(key));
+export async function getOrSetCache<T>(
+  key: { [index: string]: string | number },
+  cb: Function
+): Promise<T> {
+  const queriedEntry = cache.get(JSON.stringify(key));
   if (
-    moviesData &&
-    differenceInSeconds(new Date(), new Date(moviesData.expiration)) < 121
+    queriedEntry &&
+    differenceInSeconds(new Date(), new Date(queriedEntry.expiration)) < 120
   ) {
-    return { ...moviesData.movies, cached: true };
+    queriedEntry.cacheHitCount += 1;
+    return { ...queriedEntry.data, cached: true };
   }
   const freshData = await cb();
   cache.set(JSON.stringify(key), {
-    movies: freshData,
-    expiration: new Date()
+    data: freshData,
+    expiration: new Date(),
+    cacheHitCount: 0
   });
-  return { ...freshData, cached: false };
+  return { ...freshData, cached: false, cacheHitCount: 0 };
 }

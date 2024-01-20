@@ -9,6 +9,7 @@ export async function fetchMovies(query: string, page: number) {
       params: {
         query: `${query}`,
         page: `${page ?? 1}`
+        // pageSize: 20 TMDB doesnt support custom pagesize
       }
     }
   );
