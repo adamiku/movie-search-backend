@@ -12,7 +12,7 @@ export async function getMovies(
 ) {
   const { query, page } = req.query;
   const normalizedPage = Number(page) || 1;
-  const normalizedQuery = String(query);
+  const normalizedQuery = query ? String(query) : '';
 
   try {
     const data = await getOrSetCache<TMDBMovieResponse & { cached: boolean }>(

@@ -12,7 +12,11 @@ export async function getOrSetCache<T>(
     differenceInSeconds(new Date(), new Date(queriedEntry.expiration)) < 120
   ) {
     queriedEntry.cacheHitCount += 1;
-    return { ...queriedEntry.data, cached: true };
+    return {
+      ...queriedEntry.data,
+      cacheHitCount: queriedEntry.cacheHitCount,
+      cached: true
+    };
   }
   const freshData = await cb();
   cache.set(JSON.stringify(key), {
