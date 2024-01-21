@@ -1,12 +1,15 @@
-import { NextFunction, Router, type Request, type Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { cache, getOrSetCache } from '../db';
-import { fetchMovies } from '../lib';
 import { logger } from '../logger';
+
+import { fetchMovies } from '../lib';
 import { TMDBMovieResponse } from '../models';
 
-const router = Router();
-
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+export async function getMovies(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const { query, page } = req.query;
   const normalizedPage = Number(page) || 1;
   const normalizedQuery = String(query);
@@ -21,9 +24,13 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     return next(error);
   }
-});
+}
 
-router.delete('/', (req: Request, res: Response, next: NextFunction) => {
+export async function deleteMoviesCache(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     cache.clear();
     logger.info('Success', { req, res });
@@ -31,6 +38,4 @@ router.delete('/', (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     next(error);
   }
-});
-
-export default router;
+}
