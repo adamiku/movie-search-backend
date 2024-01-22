@@ -13,7 +13,7 @@ export const errorHandlerMiddleware = (
   logger.error('Error', { req, res });
   if (axios.isAxiosError(error)) {
     console.error(error.message);
-    return res.status(error.response?.status ?? 400).json(error);
+    return res.status(error.response?.status ?? 400).json(error.message);
   } else {
     console.log('Executing error handling middleware');
     return res.status(500).json({ error: 'Internal Server Error' });
